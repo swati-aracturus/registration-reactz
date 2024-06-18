@@ -20,77 +20,6 @@ const Registration = () => {
   const [files, setFiles] = useState([]);
   const [files2, setFiles2] = useState([]);
 
-  // api calling
-
-  const [educationData, setEducationData] = useState([]);
-  const [professionData, setProfessionData] = useState([]);
-  const [occupationData, setOccupationData] = useState([]);
-  const [countryData, setCountryData] = useState([]);
-  const [stateData, setStateData] = useState([]);
-  const [cityData, setCityData] = useState([]);
-  const [loginData, setLoginData] = useState([]);
-  const [registerData, setRegisterData] = useState([])
-
-  const [isError, setIsError] = useState('');
-
-  // api calling
-  const getApiData = async () => {
-    try {
-      const educationRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const professionRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const occupationRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const countryRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const stateRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const cityRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const loginRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-      const registerRes = await axios.get("https://api.postman.com/collections/29390551-b6fef7c9-413c-49c6-9111-71d0a9d31195?access_key=PMAT-01HZCC35AWRSCCM0NBZMVK88W3");
-
-      setEducationData(educationRes.collection.item);
-      setProfessionData(professionRes.data);
-      setOccupationData(occupationRes.data);
-      setCountryData(countryRes.data);
-      setStateData(stateRes.data);
-      setCityData(cityRes.data);
-      setLoginData(loginRes.data);
-      setRegisterData(registerRes.data);
-    } catch (error) {
-      setIsError(error.message);
-    }
-  };
-
-  useEffect(() => {
-    getApiData();
-  }, []);
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    const formData = {
-    };
-
-    try {
-      const res = await axios.post("USER_REGISTER_API_ENDPOINT", formData);
-      console.log('Registration Successful', res.data);
-    } catch (error) {
-      setIsError(error.message);
-    }
-  };
-
-  // end api
-
-
-  const [maritalStatus, setMaritalStatus] = useState('');
-  const [partnerMaritalStatus, setPartnerMaritalStatus] = useState('');
-
-  const handleMaritalStatus = (selectedOption) => {
-    setMaritalStatus(selectedOption ? selectedOption.value : '');
-  };
-
-  const handlePartnerMaritalStatus = (selectedOption) => {
-    setPartnerMaritalStatus(selectedOption ? selectedOption.value : '');
-  };
-
-
-
   const handleFileChange2 = (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (selectedFiles.length > 2) {
@@ -104,10 +33,23 @@ const Registration = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const popupRef = useRef(null);
 
+  const [formattedDob, setFormattedDOB] = useState("");
+
   const handleDOB = (e) => {
     const selectedDate = new Date(e.target.value);
-    setDob(selectedDate);
+
+    setDob(e.target.value);
+
+    console.log(e.target.value); // Log in yyyy-MM-dd format
+
+
+    setFormattedDOB(e.target.value);
     calculateAge(selectedDate);
+
+    // const selectedDate = new Date(e.target.value);
+    // setDob(selectedDate);
+    // console.log(selectedDate)
+    // calculateAge(selectedDate);
   };
   const calculateAge = (dob) => {
     const today = new Date();
@@ -918,11 +860,6 @@ const Registration = () => {
     { value: "Registered partnership", label: "Registered partnership" },
   ];
 
-  const kid = [
-    { value: "yes", label: "yes" },
-    { value: "no", label: "no" },
-  ]
-
   const Heights = [
     { value: "4 '", label: "4 '" },
     { value: "4 ' 1 \"", label: "4 ' 1 \"" },
@@ -1284,7 +1221,7 @@ const Registration = () => {
   const [partner_ExpectationDetailes, SetPartner_ExpectationDetailes] =
     useState("");
 
-  // const [maritalStatus, setMaritalStatus] = useState("");
+  const [maritalStatus, SetMaritalStatus] = useState("");
 
   const [bloodGroup, SetBloodGroup] = useState("");
 
@@ -1292,6 +1229,11 @@ const Registration = () => {
 
   const [ageFrom, SetAgefrom] = useState("");
   const [ageTo, SetAgeTo] = useState("");
+
+  
+  const [children, SetChildren] = useState("");
+  const [son, SetSon] = useState("");
+  const [daughter, SetDaughter] = useState("");
 
   const handleReference = (e) => {
     const value = e.value;
@@ -1408,7 +1350,7 @@ const Registration = () => {
   };
 
   const handlePhysical = (e) => {
-    const value = e?.target.value;
+    const value = e.value;
     if (value !== null);
     SetPhysical(value);
   };
@@ -1471,7 +1413,6 @@ const Registration = () => {
     if (value !== null);
     SetFamily_Community(value);
   };
-
 
 
   const handlesub_community = (e) => {
@@ -1549,8 +1490,28 @@ const Registration = () => {
   const handlemaritalStatus = (e) => {
     const value = e.value;
     if (value !== null);
-    setMaritalStatus(value);
+    SetMaritalStatus(value);
   };
+
+
+  const handleChildren = (e) => {
+    const value = e.value;
+    if (value !== null);
+    SetChildren(value);
+  };
+
+  const handleSon = (e) => {
+    const value = e?.target.value;
+    if (value !== null);
+    SetSon(value);
+  };
+
+  const handleDaughter = (e) => {
+    const value = e?.target.value;
+    if (value !== null);
+    SetDaughter(value);
+  };
+
 
   const handlePartner_maritalStatus = (e) => {
     const value = e.value;
@@ -1663,15 +1624,20 @@ const Registration = () => {
       toast.error("Address is required");
     } else if (isNRI === undefined) {
       toast.error("NRI status is required");
-    } else if (!isNRI === "Yes") {
+    } else if (!isNRI !== "Yes") {
+      let error = false;
       if (!visa.trim()) {
         toast.error("Visa is required for NRI");
-        return false;
-      } else if (!nriAddress.trim()) {
-        toast.error("NRI address is required");
-        return false;
+        error = true;
       }
-    } else if (!fname.trim()) {
+      if (!nriAddress.trim()) {
+        toast.error("NRI address is required");
+        error = true;
+      }
+      if (error) {
+        return false; 
+      }
+    } if (!fname.trim()) {
       toast.error("Father's name is required");
     } else if (!fatherOccupation.trim()) {
       toast.error("Father's occupation is required");
@@ -1727,7 +1693,23 @@ const Registration = () => {
       toast.error("Partner's expectation details are required");
     } else if (!maritalStatus.trim()) {
       toast.error("Marital status is required");
-    } else if (!bloodGroup.trim()) {
+    } else if (maritalStatus !== "Unmarried") {
+      if (!children.trim()) {
+        toast.error("Children declaration is required");
+        return false;
+      } else if (children === "Yes") {
+        let error = false;
+        if (!son.trim()) {
+          toast.error("Son's details are required");
+          error = true;
+        }
+        if (!daughter.trim()) {
+          toast.error("Daughter's details are required");
+          error = true;
+        }
+        if (error) return false;
+      }
+    } if (!bloodGroup.trim()) {
       toast.error("Blood group is required");
     } else if (!radio.trim()) {
       toast.error("Please select who is it for.");
@@ -1764,7 +1746,7 @@ const Registration = () => {
 
   const handleFileChanges = (event) => {
     const filez = Array.from(event.target.files);
-    console.log('handleFileChanges_________________2ndinput', filez);
+    console.log('handleFileChanges_________________2ndinput',filez);
     const currentSelectedFilesz = selectedFilesz.length;
     const newFilesCountz = filez.length;
     if (currentSelectedFilesz + newFilesCountz > 2) {
@@ -1885,7 +1867,11 @@ const Registration = () => {
     );
     formdata.append("photo[]", photo);
     formdata.append("id_proof", id);
-    // apis calling
+
+    for (let [key, value] of formdata.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+        // apis calling
     let config = {
       method: "POST",
       responseType: "json",
@@ -1919,9 +1905,9 @@ const Registration = () => {
       });
   };
 
-  // const [countryData, setCountryData] = useState([]);
-  // const [stateData, setStateData] = useState([]);
-  // const [cityData, setCityData] = useState([]);
+  const [countryData, setCountryData] = useState([]);
+  const [stateData, setStateData] = useState([]);
+  const [cityData, setCityData] = useState([]);
 
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedState, setSelectedState] = useState();
@@ -1980,65 +1966,6 @@ const Registration = () => {
 
   return (
     <>
-
-
-      {/* api data  */}
-
-      {isError && <p>Error: {isError}</p>}
-      <form onSubmit={handleRegister}>
-        <select>
-          <option value="0">Any</option>
-          {educationData.map(edu => (
-            <option key={edu.id} value={edu.name}>{edu.name}</option>
-          ))}
-        </select>
-        <select>
-          <option value="0">Any</option>
-          {professionData.map(prof => (
-            <option key={prof.id} value={prof.name}>{prof.name}</option>
-          ))}
-        </select>
-        <select>
-          <option value="0">Any</option>
-          {occupationData.map(occ => (
-            <option key={occ.id} value={occ.name}>{occ.name}</option>
-          ))}
-        </select>
-        <select>
-          <option value="0">Any</option>
-          {countryData.map(country => (
-            <option key={country.id} value={country.name}>{country.name}</option>
-          ))}
-        </select>
-        <select>
-          <option value="0">Any</option>
-          {stateData.map(state => (
-            <option key={state.id} value={state.name}>{state.name}</option>
-          ))}
-        </select>
-        <select>
-          <option value="0">Any</option>
-          {cityData.map(city => (
-            <option key={city.id} value={city.name}>{city.name}</option>
-          ))}
-          <select>
-            <option value="0">Any</option>
-            {loginData.map(log => (
-              <option key={log.id} value={log.name}>{log.name}</option>
-            ))}
-          </select>
-          <select>
-            <option value="0">Any</option>
-            {registerData.map(reg => (
-              <option key={reg.id} value={reg.name}>{reg.name}</option>
-            ))}
-          </select>
-
-        </select>
-        <button type="submit">Register</button>
-      </form>
-      {/* end data */}
-
       <Header />
       <div className="main_container  mx-auto">
         <div className="pmd:mb-[315%] ps:mb-[270%]">
@@ -2529,8 +2456,8 @@ const Registration = () => {
                       <div className="relative max-w-sm">
                         <input
                           placeholder="Select date"
-                          type="date"
-                          value={dob ? dob.toISOString().substr(0, 10) : ""}
+                          type="date" 
+                          value={formattedDob}
                           onChange={handleDOB}
                           className="border-[3px] ps:w-full w-[250px] border-gray-300 text-gray-700 text-sm rounded mt-2 focus:ring-pink-500 focus:border-pink-500 block ps-10 p-[6px]"
                         />
@@ -2750,7 +2677,7 @@ const Registration = () => {
                         className=" tracking-wide text-gray-600 text-sm font-bold mb-2"
                         htmlFor="company"
                       >
-                        Marital Status<span className="text-red-500 ">*</span>
+                        Mariatal Status<span className="text-red-500 ">*</span>
                       </label>
 
                       <Select
@@ -2796,6 +2723,67 @@ const Registration = () => {
                       <div></div>
                     </div>
                   </div>
+
+
+
+
+                  {maritalStatus !== "Unmarried" && maritalStatus !== "" && (
+                    <div className="ps:px-0 px-3 mb-6">
+                      <label
+                        className="tracking-wide text-gray-600 text-sm font-bold mb-2"
+                        htmlFor="company"
+                      >
+                        Do you have any children?{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <Select
+                        required
+                        onChange={(e) => handleChildren(e)}
+                        options={matching}
+                        className="text-gray-600 border border-gray-400 mt-2"
+                      />
+                      <div></div>
+                    </div>
+                  )}
+                    {maritalStatus !== "Unmarried" &&
+                      maritalStatus !== "" &&
+                    children === "Yes" && (
+                      <div className=" md:flex mb-6">
+                        <div className="md:w-1/2 ps:px-0 px-3 mb-6 md:mb-0">
+                          <label
+                            className=" tracking-wide text-gray-600 text-sm font-bold mb-2"
+                            htmlFor="company"
+                          >
+                            Son Details<span className="text-red-500 ">*</span>
+                          </label>
+                          <textarea
+                            required
+                            onChange={(e) => handleSon(e)}
+                            className="w-full  text-gray-600 border border-gray-400 rounded py-3 px-4 mt-2 mb-3"
+                            id="message"
+                            type="text"
+                          />
+                          <div></div>
+                        </div>
+                        <div className="md:w-1/2 ps:px-0 px-3 mb-6 md:mb-0">
+                          <label
+                            className=" tracking-wide text-gray-600 text-sm font-bold mb-2"
+                            htmlFor="company"
+                          >
+                            Daughter Details
+                            <span className="text-red-500 ">*</span>
+                          </label>
+                          <textarea
+                            required
+                            onChange={(e) => handleDaughter(e)}
+                            className="w-full  text-gray-600 border border-gray-400 rounded py-3 px-4 mt-2 mb-3"
+                            id="message"
+                            type="text"
+                          />
+                          <div></div>
+                        </div>
+                      </div>
+                    )}
 
                   <div className=" ps:px-0 px-3 mb-6">
                     <label
@@ -3277,7 +3265,7 @@ const Registration = () => {
                         )}
                         <button
                           type="submit"
-                          className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-300"
+                          className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-300 hidden"
                         >
                           Upload
                         </button>
@@ -3287,7 +3275,7 @@ const Registration = () => {
                     <Dialog open={isCropDialogOpen} onClose={() => setIsCropDialogOpen(false)}>
                       <DialogTitle className="text-white bold bg-pink-600">Crop Image</DialogTitle>
                       <DialogContent>
-                        <div style={{ height: 300, width: 450 }} className="crop-container">
+                        <div style={{height:300,width:450}} className="crop-container">
                           <Cropper
                             image={cropIndex !== null ? selectedFiles[cropIndex].preview : null}
                             crop={crop}
@@ -3356,31 +3344,31 @@ const Registration = () => {
                             <div className="flex flex-wrap -m-2">
                               {selectedFilesz.map((filez, index) => (
                                 <div key={index} className="relative m-2 wrapper-thumb">
-                                  <img
-                                    src={filez.preview}
-                                    alt={`Preview ${index}`}
-                                    className="img-preview-thumb"
-                                  />
-                                  <button
-                                    type="button"
-                                    className="absolute right-2 p-1 -top-1 remove-btn bg-red-600 text-white rounded-full shadow-sm hover:shadow-md transition-all duration-300"
-                                    onClick={() => handleRemove(index)}
-                                  >
-                                    &times;
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="mt-2 w-full px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 transition-all duration-300"
-                                    onClick={() => showCropDialog(index)}
-                                  >
-                                    Edit
-                                  </button>
-                                </div>
+                                <img
+                                  src={filez.preview}
+                                  alt={`Preview ${index}`}
+                                  className="img-preview-thumb"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute right-2 p-1 -top-1 remove-btn bg-red-600 text-white rounded-full shadow-sm hover:shadow-md transition-all duration-300"
+                                  onClick={() => handleRemove(index)}
+                                >
+                                  &times;
+                                </button>
+                                <button
+                                  type="button"
+                                  className="mt-2 w-full px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 transition-all duration-300"
+                                  onClick={() => showCropDialog(index)}
+                                >
+                                  Edit
+                                </button>
+                              </div>
                               ))}
                             </div>
                           </div>
                         )}
-                        <button type="submit" className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-300">
+                        <button type="submit" className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-300 hidden">
                           Upload
                         </button>
                       </form>
@@ -3637,55 +3625,12 @@ const Registration = () => {
                         Mariatal Status<span className="text-red-500 ">*</span>
                       </label>
 
-
-
-                      {/* marital status */}
-
-                      <div>
-                        <div className="form-group">
-                          {/* <label>Marital Status:</label> */}
-                          <Select
-                            onChange={handleMaritalStatus}
-                            options={Marital_status}
-                            className="text-gray-600 border border-gray-400 mt-2"
-                          />
-                        </div>
-                        {maritalStatus !== 'Unmarried' && (
-                          <div className="form-group">
-                            <label>Accept kid</label>
-                            <Select
-                              onChange={(e) => console.log(e)}
-                              options={kid}
-                              className="text-gray-600 border border-gray-400 mt-2"
-                            />
-                          </div>
-                        )}
-
-                        {maritalStatus !== 'Unmarried' && (
-                          <div className="form-group">
-                            <label>Kids Description:</label>
-                            <textarea
-                              onChange={(e) => handlepartner_expectation(e)}
-                              className="w-full  px-4 text-blue-900 border-2 border-[#bcbcbc] bg-transparent outline outline-0 transition-all placeholder-shown:border focus:border-[3px] focus:border-pink-500 focus:outline-0 rounded mt-2"
-                              id="message"
-                              type="text"
-                            />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* end status */}
-
-
-
-
-
-                      {/* <Select
+                      <Select
                         onChange={(e) => handlePartner_maritalStatus(e)}
                         options={Marital_status}
                         className="text-gray-600 border border-gray-400 mt-2"
                         placeholder=""
-                      /> */}
+                      />
                       <div></div>
                     </div>
                   </div>
